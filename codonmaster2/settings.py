@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 from .secret import SECRET_KE
 
@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(ops.environ.get('DJANGO_DEBUG', True))
 
 ALLOWED_HOSTS = [
 
@@ -42,13 +42,10 @@ INSTALLED_APPS = [
 
 ]
 
-GRAPHENE = {
-    'SCHEMA': 'apiserver.schema.schema' # Where your Graphene schema lives
-}
-
 SECRET_KEY = SECRET_KE
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -115,17 +112,6 @@ REST_FRAMEWORK = {
     ]
 }
 
-GRAPHENE_GENERATOR_MODELS = [
-    {
-        # 'require_auth': {
-        #     'queries': ["all", "single"],
-        #     'mutations': ["create", 'update', 'delete']
-        # },
-        'name': 'Announcement',
-        'path': 'apiserver.models.Announcement',
-    }
-]
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -143,3 +129,34 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+GRAPHENE = {
+    'SCHEMA': 'apiserver.schema.schema'  # Where your Graphene schema lives
+}
+
+GRAPHENE_GENERATOR_MODELS = [
+    {
+        # 'require_auth': {
+        #     'queries': ["all", "single"],
+        #     'mutations': ["create", 'update', 'delete']
+        # },
+        'name': 'Announcement',
+        'path': 'apiserver.models.Announcement',
+    },
+    {
+        # 'require_auth': {
+        #     'queries': ["all", "single"],
+        #     'mutations': ["create", 'update', 'delete']
+        # },
+        'name': 'ServerStatus',
+        'path': 'apiserver.models.ServerStatus',
+    }
+
+]
+
+# settings.py
+# Heroku: Update database configuration from $DATABASE_URL.
+import dj_database_url
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
