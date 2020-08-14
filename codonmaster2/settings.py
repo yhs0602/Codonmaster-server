@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
-from .secret import SECRET_KE
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(ops.environ.get('DJANGO_DEBUG', True))
+DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
 ALLOWED_HOSTS = [
 
@@ -42,7 +42,10 @@ INSTALLED_APPS = [
 
 ]
 
-SECRET_KEY = SECRET_KE
+# SECURITY WARNING: keep the secret key used in production secret!
+import os
+
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '(p7p0#$^HHFGHHdggtherververvewkjbnp3290vdvfd)w')
 
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
