@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import graphene
 from graphene import ObjectType
 from graphene_django import DjangoObjectType
@@ -89,14 +91,14 @@ class Query(ObjectType):
 
 
 class UserInput(graphene.InputObjectType):
-    id = graphene.ID()
+    # id = graphene.ID()
     name = graphene.String(required=True)
     password = graphene.String()
     google_id = graphene.String()
 
 
 class LiveResultInput(graphene.InputObjectType):
-    id = graphene.ID()
+    # id = graphene.ID()
     userId = graphene.Int()
     time = graphene.Int()
     score = graphene.Int(required=True)

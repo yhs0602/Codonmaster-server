@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+import time
 
 # Create your models here.
 
@@ -26,7 +27,7 @@ class Announcement(models.Model):
 
 
 class Ranking(models.Model):
-    time = models.IntegerField(auto_created=True)
+    time = models.IntegerField(auto_created=True, default=time.time)
     score = models.IntegerField()
     user = models.ForeignKey(MyUser, null=True, on_delete=models.SET_NULL)
 
