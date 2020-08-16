@@ -37,13 +37,52 @@ class Query(ObjectType):
     user = graphene.Field(UserType, username=graphene.String(), google_id=graphene.String())
     userOfID = graphene.Field(UserType, id=graphene.Int())
 
+    # return announcements with title, content, by accept-language in http request
     def resolve_announcements(self, info, **kwargs):
-        return Announcement.objects.all()
+        lang = info.context.META.get('HTTP_ACCEPT_LANGUAGE', '')
+        content_column = 'content_' + lang
+        title_column = 'title_' + lang
+        announcements = Announcement.objects.all()
+        for announcement in announcements:
+            content = None
+            title = None
+            try:
+                content = getattr(announcement, content_column)
+            except:
+                pass
+            try:
+                title = getattr(announcement, title_column)
+            except:
+                pass
+            if content is not None:
+                announcement.content = content
+            if title is not None:
+                announcement.title = title
+        return announcements
 
+    # return an announcement by id with title, content, by accept-language in http request
     def resolve_announcement(self, info, **kwargs):
         id = kwargs.get('id')
         if id is not None:
-            return Announcement.objects.get(pk=id)
+            announcement = Announcement.objects.get(pk=id)
+            lang = info.context.META.get('HTTP_ACCEPT_LANGUAGE', '')
+            content_column = 'content_' + lang
+            title_column = 'title_' + lang
+            content = None
+            title = None
+            try:
+                content = getattr(announcement, content_column)
+            except:
+                pass
+            try:
+                title = getattr(announcement, title_column)
+            except:
+                pass
+            if content is not None:
+                announcement.content = content
+            if title is not None:
+                announcement.title = title
+            return announcement
         return None
 
     def resolve_serverstati(self, info, **kwargs):
@@ -60,7 +99,6 @@ class Query(ObjectType):
             ranking.user.experience = 0
             ranking.user.money = 0
         return rankings
-
 
     def resolve_user(self, info, **kwargs):
         username = kwargs.get('username')
