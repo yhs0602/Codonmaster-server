@@ -27,7 +27,7 @@ class Announcement(models.Model):
 
 
 class Ranking(models.Model):
-    time = models.IntegerField(auto_created=True, default=time.time)
+    time = models.DateTimeField(auto_created=True)
     score = models.IntegerField()
     user = models.ForeignKey(MyUser, null=True, on_delete=models.SET_NULL)
 
