@@ -100,7 +100,7 @@ class UserInput(graphene.InputObjectType):
 class LiveResultInput(graphene.InputObjectType):
     # id = graphene.ID()
     userId = graphene.Int()
-    time = graphene.Int()
+    time = graphene.DateTime()
     score = graphene.Int(required=True)
 
 

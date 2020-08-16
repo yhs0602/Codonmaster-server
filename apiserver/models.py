@@ -1,8 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-import time
 
 # Create your models here.
+from django.utils import timezone
 
 
 class MyUser(AbstractUser):
@@ -27,7 +27,7 @@ class Announcement(models.Model):
 
 
 class Ranking(models.Model):
-    time = models.DateTimeField(auto_created=True)
+    time = models.DateTimeField(auto_created=True, default=timezone.now)
     score = models.IntegerField()
     user = models.ForeignKey(MyUser, null=True, on_delete=models.SET_NULL)
 
