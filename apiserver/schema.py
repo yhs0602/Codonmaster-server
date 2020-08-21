@@ -14,9 +14,22 @@ class AnnouncementType(DjangoObjectType):
         model = Announcement
 
 
-class ServerstatusType(DjangoObjectType):
-    class Meta:
-        model = ServerStatus
+class ServerstatusType(ObjectType):
+    # class Meta:
+    #     model = ServerStatus
+
+    version = graphene.Float()
+    maintenance = graphene.Boolean()
+    forceupdate = graphene.Boolean()
+
+    def resolve_version(self, info, **kwargs):
+        return float(ServerStatus.objects.get(description="version").data)
+
+    def resolve_maintenance(self, info, **kwargs):
+        return bool(ServerStatus.objects.get(description="isMaintenance").data)
+
+    def resolve_forceupdate(self, info, **kwargs):
+        return bool(ServerStatus.objects.get(description="isForceUpdate").data)
 
 
 class RankingType(DjangoObjectType):
@@ -34,6 +47,7 @@ class Query(ObjectType):
     announcement = graphene.Field(AnnouncementType, id=graphene.Int())
     serverstati = graphene.List(ServerstatusType)
     serverstatus = graphene.Field(ServerstatusType, field_description=graphene.String())
+
     rankings = graphene.List(RankingType)
     user = graphene.Field(UserType, username=graphene.String(), google_id=graphene.String())
     userOfID = graphene.Field(UserType, id=graphene.Int())
@@ -90,7 +104,7 @@ class Query(ObjectType):
         return ServerStatus.objects.all()
 
     def resolve_serverstatus(self, info, **kwargs):
-        return ServerStatus.objects.get(description=kwargs.get('field_description'))
+        return ServerStatus() # ServerStatus.objects.get(description=kwargs.get('field_description'))
 
     def resolve_rankings(self, info, **kwargs):
         rankings = Ranking.objects.all()
