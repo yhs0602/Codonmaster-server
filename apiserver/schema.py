@@ -33,6 +33,7 @@ class Query(ObjectType):
     announcements = graphene.List(AnnouncementType)
     announcement = graphene.Field(AnnouncementType, id=graphene.Int())
     serverstati = graphene.List(ServerstatusType)
+    serverstatus = graphene.Field(ServerstatusType, field_description=graphene.String())
     rankings = graphene.List(RankingType)
     user = graphene.Field(UserType, username=graphene.String(), google_id=graphene.String())
     userOfID = graphene.Field(UserType, id=graphene.Int())
@@ -87,6 +88,9 @@ class Query(ObjectType):
 
     def resolve_serverstati(self, info, **kwargs):
         return ServerStatus.objects.all()
+
+    def resolve_serverstatus(self, info, **kwargs):
+        return ServerStatus.objects.get(description=kwargs.get('field_description'))
 
     def resolve_rankings(self, info, **kwargs):
         rankings = Ranking.objects.all()
