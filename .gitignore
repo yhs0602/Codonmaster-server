@@ -3,3 +3,8 @@ db.sqlite3
 .idea
 codonmaster2/secret.py
 .DS_Store
+.gradle
+build/
+.idea/
+local.properties
+
