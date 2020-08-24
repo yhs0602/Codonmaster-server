@@ -14,4 +14,8 @@ object WelcomeStyles : StyleSheet("WelcomeStyles", isStatic = true) {
 
         fontSize = 14.px
     }
+
+    val roundToggle by css {
+        borderRadius = 34.px
+    }
 } 

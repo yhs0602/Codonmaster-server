@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
@@ -38,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apiserver',
     'graphene_django',
+    'corsheaders',
     # 'rest_framework'
 
 ]
@@ -56,6 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
