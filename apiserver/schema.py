@@ -106,9 +106,6 @@ class Query(ObjectType):
     def resolve_rankings(self, info, **kwargs):
         rankings = Ranking.objects.all()
         for ranking in rankings:
-            ranking.user.password = "None"
-            ranking.user.google_id = "None"
-            ranking.user.email = "None"
             ranking.user.jewel = 0
             ranking.user.jewel_2 = 0
             ranking.user.experience = 0
@@ -120,9 +117,6 @@ class Query(ObjectType):
         google_id = kwargs.get('google_id')
         if username is not None and google_id is not None:
             user = MyUser.objects.get(username=username, google_id=google_id)
-            user.password = "unknown"
-            user.google_id = "unknown"
-            user.email = "unknown"
             return user
 
         return None
@@ -131,9 +125,6 @@ class Query(ObjectType):
         id = kwargs.get('id')
         if id is not None:
             theUser = MyUser.objects.get(pk=id)
-            theUser.password = "None"
-            theUser.google_id = "None"
-            theUser.email = "None"
             # theUser.ranking_set = None
             theUser.jewel = 0
             theUser.money = 0
