@@ -1,10 +1,6 @@
-from datetime import datetime
-
 import graphene
 from graphene import ObjectType
 from graphene_django import DjangoObjectType
-
-from graphene_generator.holder import QueriesHolder, MutationsHolder
 
 from apiserver.models import Announcement, ServerStatus, Ranking, MyUser
 
@@ -40,6 +36,7 @@ class RankingType(DjangoObjectType):
 class UserType(DjangoObjectType):
     class Meta:
         model = MyUser
+        exclude = ('password', 'id', 'is_superuser', 'email', 'is_staff', 'google_id')
 
 
 class Query(ObjectType):
@@ -104,7 +101,7 @@ class Query(ObjectType):
         return ServerStatus.objects.all()
 
     def resolve_serverstatus(self, info, **kwargs):
-        return ServerStatus() # ServerStatus.objects.get(description=kwargs.get('field_description'))
+        return ServerStatus()  # ServerStatus.objects.get(description=kwargs.get('field_description'))
 
     def resolve_rankings(self, info, **kwargs):
         rankings = Ranking.objects.all()
